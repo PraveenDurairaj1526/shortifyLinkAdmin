@@ -61,14 +61,9 @@ export default function StatsCards() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
             {cards.map((card, i) => (
-                <div
-                    key={i}
-                    className="p-2 bg-white border border-gray-200 rounded-xl shadow-sm"
-                >
+                <div key={i} className="p-2 bg-white border border-gray-200 rounded-xl shadow-sm">
                     <p className="text-sm text-gray-500">{card.title}</p>
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-2">
-                        {loading ?  <div className="h-6 w-20 bg-gray-300 rounded animate-pulse"></div> : <>{card.value}</>}
-                    </h2>
+                    {loading ? <div className="h-8 w-20 bg-gray-300 rounded animate-pulse mt-2"></div> : <h2 className="text-2xl font-semibold text-gray-900 mt-2">{card.value}</h2>}
                 </div>
             ))}
         </div>

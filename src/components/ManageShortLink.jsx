@@ -8,7 +8,7 @@ const ITEMS_PER_PAGE = 10;
 export default function ManageShortLink() {
     const { shortLinks, loading } = useSelector((state) => state?.shortLinks)
     const dispatch = useDispatch();
-        const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
 
     useEffect(() => {
         dispatch(getLinkFromFirebase());
@@ -18,14 +18,14 @@ export default function ManageShortLink() {
         dispatch(updateVerification({ id, value }));
     };
 
-      const startIndex = currentPage * ITEMS_PER_PAGE;
+    const startIndex = currentPage * ITEMS_PER_PAGE;
     const paginatedData = shortLinks.slice(
         startIndex,
         startIndex + ITEMS_PER_PAGE
     );
 
 
-    const tableHead = ['No', 'Date', "Link Title", "Original Link", "Click Count", "verification", "Track Link", "short Link",]
+    const tableHead = ['No', 'Date', "verification", "Link Title", "Original Link", "Click Count", "Track Link", "short Link",]
     return (
         <div className=" p-4 sm:p-6 -mt-6 rounded-t-4xl bg-[#f0f8ff]">
             {loading ? <div className="flex justify-center items-center py-10 min-h-[500px]">
@@ -45,9 +45,6 @@ export default function ManageShortLink() {
                             <TableRow>
                                 <TableCell>{key + 1}</TableCell>
                                 <TableCell>{formattedDate}</TableCell>
-                                <TableCell>{item?.linkTitle ?? '-'}</TableCell>
-                                <TableCell>{item?.originalUrl ? <a href={item?.originalUrl} target="_blank" className="text-blue-600">{item?.originalUrl}</a> : '-'}</TableCell>
-                                <TableCell>{item?.clickCount ?? '-'}</TableCell>
                                 <TableCell>
                                     {item?.verification == "approved" ? <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700 border border-green-300">Approved</span> : item?.verification == "not-approved" ? <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700 border border-red-300">Not Approved</span> :
                                         <div class="w-full max-w-sm min-w-[200px]">
@@ -63,21 +60,26 @@ export default function ManageShortLink() {
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                                 </svg>
                                             </div>
-                                        </div>
-                                    }</TableCell>
+                                        </div>}
+                                </TableCell>
+                                <TableCell>{item?.linkTitle ?? '-'}</TableCell>
+                                <TableCell>{item?.originalUrl ? <a href={item?.originalUrl} target="_blank" className="text-blue-600">{item?.originalUrl}</a> : '-'}</TableCell>
+                                <TableCell>{item?.clickCount ?? '-'}</TableCell>
+
                                 <TableCell>{item?.trackingUrl ? <a href={item?.trackingUrl} target="_blank" className="text-blue-600">{item?.trackingUrl}</a> : '-'}</TableCell>
                                 <TableCell>{item?.shortUrl ? <a href={item?.shortUrl} target="_blank" className="text-blue-600">{item?.shortUrl}</a> : '-'}</TableCell>
                             </TableRow>
                         )
                     })}
                 </Table>
+                <Pagination
+                    totalItems={shortLinks.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                />
             </>}
-             <Pagination
-                totalItems={shortLinks.length}
-                itemsPerPage={ITEMS_PER_PAGE}
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-            />
+
         </div>
     );
 }
