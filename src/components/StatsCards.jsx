@@ -37,7 +37,10 @@ export default function StatsCards() {
         const created = toDate(item.createAt);
         return created >= startOfMonth;
     }).length;
-    console.log(shortLinks?.length, 'kk')
+    const totalClick = shortLinks.reduce(
+        (acc, val) => acc + (val?.clickCount || 0),
+        0
+    );
 
     const cards = [
         {
@@ -55,6 +58,10 @@ export default function StatsCards() {
         {
             title: "Total Links",
             value: shortLinks?.length,
+        },
+        {
+            title: "Total clicks",
+            value: totalClick,
         },
     ];
 
