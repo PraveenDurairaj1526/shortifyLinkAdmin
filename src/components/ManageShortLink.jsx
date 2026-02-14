@@ -30,7 +30,7 @@ export default function ManageShortLink() {
     const tableHead = ['No', 'Date', "verification", "Link Title", "Original Link", "Click Count", "Track Link", "short Link",]
     const notificationTableHead = ['No', 'Date', "verification", "RemainderType", "Original Link", "Click Count", "Track Link", "short Link",]
     return (
-        <div className=" p-4 sm:p-6 -mt-6 rounded-t-4xl bg-[#f0f8ff]">
+        <div className="-mt-6 rounded-t-4xl">
 
             {loading ? <div className="flex justify-center items-center py-10 min-h-[500px]">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>

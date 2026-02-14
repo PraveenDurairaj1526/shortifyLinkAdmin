@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import ManageShortLink from './components/ManageShortLink';
-import AdminBanner from './components/AdminBanner';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import StatsCards from './components/stats/StatsCards';
 
 function App() {
 
   return (
     <Provider store={store}>
-      <AdminBanner />
-      <ManageShortLink />
+      <div className='p-6  bg-[#f0f8ff]'>
+        <StatsCards />
+        <ManageShortLink />
+      </div>
     </Provider>
   )
 }
