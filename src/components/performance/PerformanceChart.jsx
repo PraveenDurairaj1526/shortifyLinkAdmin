@@ -28,25 +28,16 @@ const PerformanceChart = () => {
   }, [dispatch]);
 
 
-  const rawData = [
-    { count: 120, shortLink: 20 },
-    { count: 190, shortLink: 30 },
-    { count: 300, shortLink: 40 },
-    { count: 250, shortLink: 22 },
-    { count: 220, shortLink: 18 },
-    { count: 400, shortLink: 50 },
-    { count: 380, shortLink: 45 },
-  ];
-  const select = 'click '
+ 
 
   const data = {
-    labels: [...getFilterData(shortLinks, days).map(item => item.date)],
+    labels: [...getFilterData(shortLinks, days).map(item => item.date )],
     datasets: [
       {
         label: 'Short Link',
         data: getFilterData(shortLinks, days).map(item => item.shortLink),
         borderColor: "#6366F1",
-        backgroundColor: "#6366F1",
+        backgroundColor: "#ffffff",
         tension: 0,
         fill: true,
       }
@@ -64,7 +55,9 @@ const PerformanceChart = () => {
     },
     scales: {
       x: {
-        grid: { display: false },
+          grid: {
+          color: "#ebe6e7",
+        },
       },
       y: {
         grid: {

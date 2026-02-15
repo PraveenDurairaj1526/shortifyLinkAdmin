@@ -14,7 +14,6 @@ const collectionName = "manage_url";
 export const updateVerification = createAsyncThunk(
     "manageLinks/updateVerification",
     async ({ id, value }) => {
-        console.log(id, value,'jjjjjj')
         const docRef = doc(db, collectionName, id);
         await updateDoc(docRef, { verification: value });
         return { id, value };
@@ -34,10 +33,14 @@ export const getLinkFromFirebase = createAsyncThunk(
         onSnapshot(
             q,
             (snap) => {
-                const result = snap.docs.map((doc) => ({
-                    fb_id: doc.id,
-                    ...doc.data(),
-                }));
+                const result = snap.docs.map((doc) => {
+                    const data = doc.data();
+                    return {
+                        fb_id: doc.id,
+                        ...data,
+                        createAt: data.createAt?.toDate().toISOString(), // ✅ FIX HERE
+                    }
+                });
 
                 dispatch(setLinks(result));
                 dispatch(setLoading(false));

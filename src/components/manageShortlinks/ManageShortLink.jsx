@@ -3,128 +3,76 @@ import { Table, TableCell, TableRow } from "../UI/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { getLinkFromFirebase, updateVerification } from "../../slice/shortLinkSlice";
 import Pagination from "../UI/Pagination";
-import { ArrowUpDownIcon } from "../../assets/SvgIcons";
+import cx from 'classnames';
+import ManageShortLinkTableBody from "./ManageShortLinkTableBody";
+import notFoundImg from '../../assets/no-data.gif';
+
 const ITEMS_PER_PAGE = 10;
 
 export default function ManageShortLink() {
     const { shortLinks, loading } = useSelector((state) => state?.shortLinks)
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(0);
-
-    useEffect(() => {
-        dispatch(getLinkFromFirebase());
-    }, [dispatch]);
+    const [tab, setTab] = useState('allLinks')
 
     const handleVerificationChange = (id, value) => {
         dispatch(updateVerification({ id, value }));
     };
 
     const startIndex = currentPage * ITEMS_PER_PAGE;
-    const paginatedData = shortLinks.slice(
+
+    const filteredShortLinks = tab == 'allLinks' ? shortLinks : shortLinks.filter((item) => !item?.verification)
+    const unverifiedLinkCount = shortLinks.filter((item) => !item?.verification)
+
+    const paginatedData = filteredShortLinks.slice(
         startIndex,
         startIndex + ITEMS_PER_PAGE
     );
 
-    const email = shortLinks?.filter((item) => item?.emailRemainder == true || item?.whatsappRemainder == true)
+    useEffect(() => {
+        dispatch(getLinkFromFirebase());
+    }, [dispatch]);
 
 
     const tableHead = ['No', 'Date', "verification", "Link Title", "Original Link", "Click Count", "Track Link", "short Link",]
-    const notificationTableHead = ['No', 'Date', "verification", "RemainderType", "Original Link", "Click Count", "Track Link", "short Link",]
+
     return (
         <div className="rounded-t-4xl">
 
             {loading ? <div className="flex justify-center items-center py-10 min-h-[500px]">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
             </div> : <>
-
-                <h2 className="font-semibold text-xl mb-6">Manage Short Link</h2>
-                <Table tableHead={tableHead} >
-                    {paginatedData?.map((item, key) => {
-                        const formattedDate = item?.createAt
-                            ? item.createAt?.toDate()?.toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric"
-                            })
-                            : null;
-                        return (
-                            <TableRow>
-                                <TableCell>{key + 1}</TableCell>
-                                <TableCell>{formattedDate}</TableCell>
-                                <TableCell>
-                                    {item?.verification == "approved" ? <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700 border border-green-300">Approved</span> : item?.verification == "not-approved" ? <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700 border border-red-300">Not Approved</span> :
-                                        <div class="w-full max-w-sm min-w-[200px]">
-                                            <div class="relative">
-                                                <select
-                                                    onChange={(e) => handleVerificationChange(item?.fb_id, e.target.value)}
-                                                    class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none  hover:border-slate-400 focus:shadow-md appearance-none cursor-pointer">
-                                                    <option value="">Select</option>
-                                                    <option value="approved">Approved</option>
-                                                    <option value="not-approved">Not Approved</option>
-                                                </select>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                                </svg>
-                                            </div>
-                                        </div>}
-                                </TableCell>
-                                <TableCell>{item?.linkTitle ?? '-'}</TableCell>
-                                <TableCell>{item?.originalUrl ? <a href={item?.originalUrl} target="_blank" className="text-blue-600">{item?.originalUrl}</a> : '-'}</TableCell>
-                                <TableCell>{item?.clickCount ?? '-'}</TableCell>
-
-                                <TableCell>{item?.trackingUrl ? <a href={item?.trackingUrl} target="_blank" className="text-blue-600">{item?.trackingUrl}</a> : '-'}</TableCell>
-                                <TableCell>{item?.shortUrl ? <a href={item?.shortUrl} target="_blank" className="text-blue-600">{item?.shortUrl}</a> : '-'}</TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </Table>
-                <Pagination
-                    totalItems={shortLinks.length}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    currentPage={currentPage}
-                    onPageChange={setCurrentPage}
-                />
-
-                <h2 className="font-semibold text-xl mb-6 mt-6">Manage Remainder Link</h2>
-                <Table tableHead={notificationTableHead}>
-                    {email?.map((item, key) => {
-                        const formattedDate = item?.createAt
-                            ? item.createAt?.toDate()?.toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric"
-                            })
-                            : null;
-                        return (
-                            <TableRow>
-                                <TableCell>{key + 1}</TableCell>
-                                <TableCell>{formattedDate}</TableCell>
-                                <TableCell>
-                                    {item?.verification == "approved" ? <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700 border border-green-300">Approved</span> : item?.verification == "not-approved" ? <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700 border border-red-300">Not Approved</span> :
-                                        <div class="w-full max-w-sm min-w-[200px]">
-                                            <div class="relative">
-                                                <select
-                                                    onChange={(e) => handleVerificationChange(item?.fb_id, e.target.value)}
-                                                    class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none  hover:border-slate-400 focus:shadow-md appearance-none cursor-pointer">
-                                                    <option value="">Select</option>
-                                                    <option value="approved">Approved</option>
-                                                    <option value="not-approved">Not Approved</option>
-                                                </select>
-                                                <ArrowUpDownIcon className={'h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700'}/>
-                                            </div>
-                                        </div>}
-                                </TableCell>
-                                <TableCell><p>{item?.email}</p>  {item?.whatsapp} </TableCell>
-
-                                <TableCell>{item?.originalUrl ? <a href={item?.originalUrl} target="_blank" className="text-blue-600">{item?.originalUrl}</a> : '-'}</TableCell>
-                                <TableCell>{item?.clickCount ?? '-'}</TableCell>
-
-                                <TableCell>{item?.trackingUrl ? <a href={item?.trackingUrl} target="_blank" className="text-blue-600">{item?.trackingUrl}</a> : '-'}</TableCell>
-                                <TableCell>{item?.shortUrl ? <a href={item?.shortUrl} target="_blank" className="text-blue-600">{item?.shortUrl}</a> : '-'}</TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </Table>
+                <div className="rounded-xl border border-gray-200 bg-white">
+                    <div className="p-5 border-b border-b-gray-200 flex gap-3 justify-between items-end flex-wrap">
+                        <div>
+                            <h2 className="font-semibold text-xl mb-1.5">Short Link Management</h2>
+                            <p className='text-sm text-gray-700'>Review and manage all generated links and performance metrics.</p>
+                        </div>
+                        <div className="p-1 rounded-md bg-gray-100 flex gap-3">
+                            <button className={cx("py-1 px-3 rounded-md cursor-pointer", tab == 'allLinks' ? 'text-blue-600 bg-white' : 'text-gray-700')} onClick={() => setTab("allLinks")}>
+                                All
+                            </button>
+                            <div className={cx("py-1 px-3 rounded-md flex gap-1.5 items-center cursor-pointer", tab == 'unverifiedLinks' ? 'text-blue-600 bg-white' : 'text-gray-700')} onClick={() => setTab("unverifiedLinks")}>
+                                <span>Pending Review</span>
+                                {unverifiedLinkCount.length > 0 && <span className="rounded-full p-1 flex justify-center items-center text-white bg-red-600 text-xs w-5 h-5">{unverifiedLinkCount.length}</span>}
+                            </div>
+                        </div>
+                    </div>
+                    <Table tableHead={tableHead} >
+                        <ManageShortLinkTableBody paginatedData={paginatedData} handleVerification={handleVerificationChange} />
+                    </Table>
+                    {filteredShortLinks.length == 0 && <div className="flex justify-between items-center min-h-[400px]"><img src={notFoundImg} className="w-[200px] h-[200px] mx-auto" /></div>}
+                    {filteredShortLinks.length > 10 &&
+                        <div className="p-5">
+                            <Pagination
+                                totalItems={filteredShortLinks.length}
+                                itemsPerPage={ITEMS_PER_PAGE}
+                                currentPage={currentPage}
+                                onPageChange={setCurrentPage}
+                            />
+                        </div>}
+                </div>
             </>}
-
         </div>
     );
 }

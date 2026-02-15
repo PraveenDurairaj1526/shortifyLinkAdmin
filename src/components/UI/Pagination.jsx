@@ -16,7 +16,7 @@ export default function Pagination({
             pageCount={pageCount}
             forcePage={currentPage}
             onPageChange={(e) => onPageChange(e.selected)}
-            containerClassName="flex items-center justify-center gap-2 mt-6 flex-wrap"
+            containerClassName="flex items-center justify-center gap-2 flex-wrap"
             pageClassName="px-2 py-1 border rounded cursor-pointer text-[12px]"
             activeClassName="bg-blue-600 border border-blue-600 text-white"
             previousClassName="px-2 py-1 border rounded text-[12px]"

@@ -1,7 +1,7 @@
 import React from 'react';
 export const TableRow = ({children}) => {
     return (
-        <tr className="hover:bg-[#f0f8ff] transition bg-white text-sm">{children}</tr>
+        <tr className="hover:bg-[#f0f8ff] transition bg-white text-sm border-b border-b-gray-200">{children}</tr>
     )
 }
 
@@ -15,10 +15,10 @@ export const TableCell = ({children}) => {
 export const Table = ({ tableHead, children }) => {
     return (
 
-        <div className="overflow-x-auto  bg-white rounded-2xl">
+        <div className="overflow-x-auto  bg-white">
             <div className="overflow-x-auto">
                 <table className="min-w-full  overflow-hidden bg-white">
-                    <thead className="bg-gray-100/80">
+                    <thead className="bg-gray-50">
                         <tr className="text-black ">
                             {tableHead?.map((data, key) => {
                                 return (<th className={"px-2 py-3 font-semibold text-left min-w-[150px] text-sm"} key={key}>{data}</th>)
