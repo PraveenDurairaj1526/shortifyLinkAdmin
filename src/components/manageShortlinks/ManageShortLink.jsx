@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, TableCell, TableRow } from "../UI/Table";
+import { Table } from "../UI/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { getLinkFromFirebase, updateVerification } from "../../slice/shortLinkSlice";
 import Pagination from "../UI/Pagination";
@@ -38,10 +38,7 @@ export default function ManageShortLink() {
 
     return (
         <div className="rounded-t-4xl">
-
-            {loading ? <div className="flex justify-center items-center py-10 min-h-[500px]">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
-            </div> : <>
+            <>
                 <div className="rounded-xl border border-gray-200 bg-white">
                     <div className="p-5 border-b border-b-gray-200 flex gap-3 justify-between items-end flex-wrap">
                         <div>
@@ -59,9 +56,12 @@ export default function ManageShortLink() {
                         </div>
                     </div>
                     <Table tableHead={tableHead} >
-                        <ManageShortLinkTableBody paginatedData={paginatedData} handleVerification={handleVerificationChange} />
+                        {!loading && <ManageShortLinkTableBody paginatedData={paginatedData} handleVerification={handleVerificationChange} />}
                     </Table>
-                    {filteredShortLinks.length == 0 && <div className="flex justify-between items-center min-h-[400px]"><img src={notFoundImg} className="w-[200px] h-[200px] mx-auto" /></div>}
+                    {loading && <div className="flex justify-center items-center py-10 min-h-[400px] ">
+                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
+                    </div>}
+                    {!loading && filteredShortLinks.length == 0 && <div className="flex justify-between items-center min-h-[400px]"><img src={notFoundImg} className="w-[200px] h-[200px] mx-auto" /></div>}
                     {filteredShortLinks.length > 10 &&
                         <div className="p-5">
                             <Pagination
@@ -72,7 +72,7 @@ export default function ManageShortLink() {
                             />
                         </div>}
                 </div>
-            </>}
+            </>
         </div>
     );
 }

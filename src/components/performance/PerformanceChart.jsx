@@ -28,10 +28,8 @@ const PerformanceChart = () => {
   }, [dispatch]);
 
 
- 
-
   const data = {
-    labels: [...getFilterData(shortLinks, days).map(item => item.date )],
+    labels: [...getFilterData(shortLinks, days).map(item => item.date)],
     datasets: [
       {
         label: 'Short Link',
@@ -48,6 +46,10 @@ const PerformanceChart = () => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: "index", 
+      intersect: false,  
+    },
     plugins: {
       legend: {
         display: false,
@@ -55,7 +57,7 @@ const PerformanceChart = () => {
     },
     scales: {
       x: {
-          grid: {
+        grid: {
           color: "#ebe6e7",
         },
       },
