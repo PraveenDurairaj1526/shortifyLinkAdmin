@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import ManageShortLink from './components/ManageShortLink';
+
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import StatsCards from './components/stats/StatsCards';
+import PerformanceChart from './components/performance/PerformanceChart';
+import ManageShortLink from './components/manageShortlinks/ManageShortLink';
 
 function App() {
 
@@ -10,6 +12,7 @@ function App() {
     <Provider store={store}>
       <div className='p-6  bg-[#f0f8ff]'>
         <StatsCards />
+        <PerformanceChart/>
         <ManageShortLink />
       </div>
     </Provider>

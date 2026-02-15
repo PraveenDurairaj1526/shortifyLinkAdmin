@@ -68,7 +68,7 @@ export default function StatsCards() {
     ]
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6" >
             {shortLinkData?.map((item,index) => {
                 const Icon = item?.icon
                 return (

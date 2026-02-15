@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Table, TableCell, TableRow } from "./UI/Table";
+import { Table, TableCell, TableRow } from "../UI/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { getLinkFromFirebase, updateVerification } from "../slice/shortLinkSlice";
-import Pagination from "./UI/Pagination";
+import { getLinkFromFirebase, updateVerification } from "../../slice/shortLinkSlice";
+import Pagination from "../UI/Pagination";
+import { ArrowUpDownIcon } from "../../assets/SvgIcons";
 const ITEMS_PER_PAGE = 10;
 
 export default function ManageShortLink() {
@@ -30,14 +31,14 @@ export default function ManageShortLink() {
     const tableHead = ['No', 'Date', "verification", "Link Title", "Original Link", "Click Count", "Track Link", "short Link",]
     const notificationTableHead = ['No', 'Date', "verification", "RemainderType", "Original Link", "Click Count", "Track Link", "short Link",]
     return (
-        <div className="-mt-6 rounded-t-4xl">
+        <div className="rounded-t-4xl">
 
             {loading ? <div className="flex justify-center items-center py-10 min-h-[500px]">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
             </div> : <>
 
                 <h2 className="font-semibold text-xl mb-6">Manage Short Link</h2>
-                <Table tableHead={tableHead}>
+                <Table tableHead={tableHead} >
                     {paginatedData?.map((item, key) => {
                         const formattedDate = item?.createAt
                             ? item.createAt?.toDate()?.toLocaleDateString("en-US", {
@@ -107,9 +108,7 @@ export default function ManageShortLink() {
                                                     <option value="approved">Approved</option>
                                                     <option value="not-approved">Not Approved</option>
                                                 </select>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                                </svg>
+                                                <ArrowUpDownIcon className={'h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700'}/>
                                             </div>
                                         </div>}
                                 </TableCell>
