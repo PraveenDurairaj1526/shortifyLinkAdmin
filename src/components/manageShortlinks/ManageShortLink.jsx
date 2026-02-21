@@ -46,10 +46,10 @@ export default function ManageShortLink() {
                             <p className='text-sm text-gray-700'>Review and manage all generated links and performance metrics.</p>
                         </div>
                         <div className="p-1 rounded-md bg-gray-100 flex gap-3">
-                            <button className={cx("py-1 px-3 rounded-md cursor-pointer", tab == 'allLinks' ? 'text-blue-600 bg-white' : 'text-gray-700')} onClick={() => setTab("allLinks")}>
+                            <button className={cx("py-1 px-3 rounded-md cursor-pointer", tab == 'allLinks' ? 'text-blue-600 bg-white shadow-md' : 'text-gray-700')} onClick={() => setTab("allLinks")}>
                                 All
                             </button>
-                            <div className={cx("py-1 px-3 rounded-md flex gap-1.5 items-center cursor-pointer", tab == 'unverifiedLinks' ? 'text-blue-600 bg-white' : 'text-gray-700')} onClick={() => setTab("unverifiedLinks")}>
+                            <div className={cx("py-1 px-3 rounded-md flex gap-1.5 items-center cursor-pointer", tab == 'unverifiedLinks' ? 'text-blue-600 bg-white shadow-md' : 'text-gray-700')} onClick={() => setTab("unverifiedLinks")}>
                                 <span>Pending Review</span>
                                 {unverifiedLinkCount.length > 0 && <span className="rounded-full p-1 flex justify-center items-center text-white bg-red-600 text-xs w-5 h-5">{unverifiedLinkCount.length}</span>}
                             </div>

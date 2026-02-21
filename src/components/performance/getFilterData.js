@@ -1,16 +1,23 @@
 const toDate = (ts) => (ts?.toDate ? ts.toDate() : new Date(ts));
 
 export const getFilterData = (data = [], days = 7) => {
-  const now = new Date();
-  const pastDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); 
+
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - (days - 1)); 
 
   const grouped = {};
 
   data.forEach((item) => {
-    const dateObj = toDate(item?.createAt);
-    if (dateObj < pastDate) return;
+    if (!item?.createAt) return;
 
-    const dateKey = dateObj.toISOString().split("T")[0];
+    const dateObj = toDate(item.createAt);
+    dateObj.setHours(0, 0, 0, 0); 
+
+    if (dateObj < startDate) return;
+
+  const dateKey = dateObj.toLocaleDateString("en-CA");
 
     if (!grouped[dateKey]) {
       grouped[dateKey] = {
@@ -23,8 +30,10 @@ export const getFilterData = (data = [], days = 7) => {
     grouped[dateKey].shortLink += 1;
   });
 
-  return Object.entries(grouped).map(([date, value]) => ({
-    date,
-    ...value,
-  }));
+  return Object.entries(grouped)
+    .map(([date, value]) => ({
+      date,
+      ...value,
+    }))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 };

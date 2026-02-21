@@ -12,7 +12,7 @@ function App() {
   return (
     <Provider store={store}>
       <Header />
-      <div className='p-6  bg-[#f0f8ff]'>
+      <div className='p-6  bg-[#fbfafa78]'>
         <StatsCards />
         <PerformanceChart />
         <ManageShortLink />
