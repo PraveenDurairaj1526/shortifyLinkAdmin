@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TableCell, TableRow } from '../UI/Table';
 import { ArrowUpDownIcon } from '../../assets/SvgIcons';
 
 const ManageShortLinkTableBody = ({ paginatedData, handleVerification }) => {
+
     return (
         <>
             {paginatedData?.map((item, key) => {
@@ -13,7 +14,7 @@ const ManageShortLinkTableBody = ({ paginatedData, handleVerification }) => {
                     })
                     : null;
                 return (
-                    <TableRow key={key}>
+                    <TableRow key={item?.fb_id}>
                         <TableCell>{key + 1}</TableCell>
                         <TableCell>{formattedDate}</TableCell>
                         <TableCell>
@@ -34,7 +35,6 @@ const ManageShortLinkTableBody = ({ paginatedData, handleVerification }) => {
                         <TableCell>{item?.linkTitle ?? '-'}</TableCell>
                         <TableCell>{item?.originalUrl ? <a href={item?.originalUrl} target="_blank" className="text-blue-600">{item?.originalUrl}</a> : '-'}</TableCell>
                         <TableCell>{item?.clickCount ?? '-'}</TableCell>
-
                         <TableCell>{item?.trackingUrl ? <a href={item?.trackingUrl} target="_blank" className="text-blue-600">{item?.trackingUrl}</a> : '-'}</TableCell>
                         <TableCell>{item?.shortUrl ? <a href={item?.shortUrl} target="_blank" className="text-blue-600">{item?.shortUrl}</a> : '-'}</TableCell>
                     </TableRow>

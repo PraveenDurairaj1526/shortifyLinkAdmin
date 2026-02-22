@@ -21,8 +21,11 @@ export default function ManageShortLink() {
 
     const startIndex = currentPage * ITEMS_PER_PAGE;
 
-    const filteredShortLinks = tab == 'allLinks' ? shortLinks : shortLinks.filter((item) => !item?.verification)
-    const unverifiedLinkCount = shortLinks.filter((item) => !item?.verification)
+
+const unverifiedLinks = shortLinks.filter(
+  (item) => !("verification" in item) || item?.verification == ''
+);
+    const filteredShortLinks = tab == "allLinks" ? shortLinks : unverifiedLinks;
 
     const paginatedData = filteredShortLinks.slice(
         startIndex,
@@ -51,7 +54,7 @@ export default function ManageShortLink() {
                             </button>
                             <div className={cx("py-1 px-3 rounded-md flex gap-1.5 items-center cursor-pointer", tab == 'unverifiedLinks' ? 'text-blue-600 bg-white shadow-md' : 'text-gray-700')} onClick={() => setTab("unverifiedLinks")}>
                                 <span>Pending Review</span>
-                                {unverifiedLinkCount.length > 0 && <span className="rounded-full p-1 flex justify-center items-center text-white bg-red-600 text-xs w-5 h-5">{unverifiedLinkCount.length}</span>}
+                                {unverifiedLinks.length > 0 && <span className="rounded-full p-1 flex justify-center items-center text-white bg-red-600 text-xs w-5 h-5">{unverifiedLinks.length}</span>}
                             </div>
                         </div>
                     </div>
